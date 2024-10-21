@@ -1,0 +1,63 @@
+<div class="container-fluid mt-3">
+    <h5>Mi Carritto</h5>
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Imagen</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Importe</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @for(item of listCart; track item.producto){
+                                <tr>
+                                    <td>{{item.producto.nombre}}</td>
+                                    <td>
+                                        <img [src]="'/img/' + item.producto.imagen" width="50" height="60" />
+                                    </td>
+                                    <td>{{item.producto.precio}}</td>
+                                    <td>{{item.cantidad}}</td>
+                                    <td>{{item.producto.precio*item.cantidad}}</td>
+                                </tr>
+                                }
+
+                                @if(listCart.length == 0){
+                                <tr>
+                                    <td colspan="5" class="text-center">No hay productos</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h5>Resumen de Compra</h5>
+                        <hr />
+                        <div class="d-flex justify-content-between mb-4">
+                            <p class="mb-2">Total</p>
+                            <p class="mb-2">${{cartService.total()}}</p>
+                        </div>
+                        <button type="button" class="btn btn-dark btn-block btn-lg">
+                            <div class="d-flex justify-content-between">
+                                <span>Procesar</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
