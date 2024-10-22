@@ -26,10 +26,9 @@ export class InicioComponent implements OnInit{
     this.productoService.getProductos().subscribe({
       next:(data)=>{
         this.productos = data;
-        console.log(this.productos);
       },
       error:(e)=>{
-        console.log(e);
+        console.error(e);
       }
     })
   }

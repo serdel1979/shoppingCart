@@ -1,5 +1,14 @@
 <div class="container-fluid mt-3">
     <h5>Mi Carritto</h5>
+    @if(alertVisible){
+        <div class="alert custom-alert alert-dismissible fade show d-flex justify-content-between" role="alert">
+            <strong>¡¡¡Compra procesada!!!.</strong> 
+            <button type="button" class="btn btn-primary" style="background-color: brown;" data-dismiss="modal" aria-label="Close" (click)="cerrarAlerta()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+          
+    }
     <div class="row">
         <div class="col-sm-9">
             <div class="card">
@@ -13,6 +22,7 @@
                                     <th>Precio</th>
                                     <th>Cantidad</th>
                                     <th>Importe</th>
+                                    <th>Acción</th>
                                 </tr>
                             </thead>
 
@@ -23,15 +33,30 @@
                                     <td>
                                         <img [src]="'/img/' + item.producto.imagen" width="50" height="60" />
                                     </td>
-                                    <td>{{item.producto.precio}}</td>
-                                    <td>{{item.cantidad}}</td>
-                                    <td>{{item.producto.precio*item.cantidad}}</td>
+                                    <td>{{(item.producto.precio | number: '1.2-2')}}</td>
+                                    <td>
+                                        <input class="form-control" 
+                                        type="number" 
+                                        [ngModel]="item.cantidad" 
+                                        min="1"
+                                        (ngModelChange)="onCantidadChange($event, item)" 
+                                        (change)="update(item,$index)"
+                                        (keydown)="onKeyDown($event)" />
+                                 
+                                 
+                                    </td>
+                                    <td>{{(item.producto.precio*item.cantidad | number: '1.2-2')}}</td>
+                                    <td>
+                                        <button (click)="eliminarItem($index)" class="btn btn-danger btn-sm" type="button">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                                 }
 
                                 @if(listCart.length == 0){
                                 <tr>
-                                    <td colspan="5" class="text-center">No hay productos</td>
+                                    <td colspan="6" class="text-center">No hay productos</td>
                                 </tr>
                                 }
                             </tbody>
@@ -48,13 +73,17 @@
                         <hr />
                         <div class="d-flex justify-content-between mb-4">
                             <p class="mb-2">Total</p>
-                            <p class="mb-2">${{cartService.total()}}</p>
+                            <p class="mb-2">${{(cartService.total()) | number: '1.2-2'}}</p>
                         </div>
-                        <button type="button" class="btn btn-dark btn-block btn-lg">
+                        <button [disabled]="listCart.length == 0" 
+                                type="button" 
+                                class="btn btn-dark btn-block btn-lg"
+                                (click)="mostrarAlerta()">
                             <div class="d-flex justify-content-between">
                                 <span>Procesar</span>
                             </div>
                         </button>
+
                     </div>
                 </div>
             </div>
